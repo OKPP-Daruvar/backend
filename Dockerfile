@@ -10,7 +10,7 @@ WORKDIR /src
 
 # Copy the project files for WebApi and Forms.Model (make sure Forms.Model is included)
 COPY ["Forms.WebApi/Forms.WebApi.csproj", "Forms.WebApi/"]
-COPY ["Forms.Model/Forms.Model.csproj", "Forms.Model/"]
+COPY ["Forms.Model/Forms.Model.csproj", "Forms.Repository/"]
 
 # Restore dependencies
 RUN dotnet restore "Forms.WebApi/Forms.WebApi.csproj"
