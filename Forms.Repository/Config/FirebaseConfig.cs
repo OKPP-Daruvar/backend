@@ -11,7 +11,6 @@ namespace Forms.Repository.Config
         {
             try
             {
-                string serviceAccountPath = Environment.GetEnvironmentVariable("FIREBASE_SERVICE_ACCOUNT_PATH");
                 string serviceAccountJson = Environment.GetEnvironmentVariable("FIREBASE_SERVICE_ACCOUNT_JSON");
 
                 if (!string.IsNullOrEmpty(serviceAccountJson))
@@ -20,13 +19,6 @@ namespace Forms.Repository.Config
                     FirebaseApp.Create(new AppOptions
                     {
                         Credential = GoogleCredential.FromJson(serviceAccountJson)
-                    });
-                }
-                else if (!string.IsNullOrEmpty(serviceAccountPath) && File.Exists(serviceAccountPath))
-                {
-                    FirebaseApp.Create(new AppOptions
-                    {
-                        Credential = GoogleCredential.FromFile(serviceAccountPath)
                     });
                 }
                 else
