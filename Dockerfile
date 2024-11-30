@@ -8,20 +8,21 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 
+# Copy the project files for WebApi and Forms.Model (make sure Forms.Model is included)
 COPY ["Forms.WebApi/Forms.WebApi.csproj", "Forms.WebApi/"]
-COPY ["Forms.Repository/Forms.Repository.csproj", "Forms.Repository/"]
+COPY ["Forms.Model/Forms.Model.csproj", "Forms.Model/"]
 
-# Restore dependencies for the WebApi project
+# Restore dependencies
 RUN dotnet restore "Forms.WebApi/Forms.WebApi.csproj"
 
-# Copy the entire source code
+# Copy the rest of the source code
 COPY . .
 
-# Set the working directory to WebApi folder and build the WebApi project
+# Set the working directory to WebApi folder and build the WebApi
 WORKDIR "/src/Forms.WebApi"
 RUN dotnet build "Forms.WebApi.csproj" -c Release -o /app/build
 
-# Publish the WebApi project to /app/publish
+# Publish the application to /app/publish
 FROM build AS publish
 RUN dotnet publish "Forms.WebApi.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
@@ -30,7 +31,7 @@ FROM base AS final
 WORKDIR /app
 
 # Copy everything from /app/publish into the final image
-COPY --from=publish /app/publish . 
+COPY --from=publish /app/publish .
 
 # Set the entry point to run the WebApi
 ENTRYPOINT ["dotnet", "Forms.WebApi.dll"]
