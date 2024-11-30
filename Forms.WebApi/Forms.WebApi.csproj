@@ -9,8 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FirebaseAdmin" Version="3.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Forms.Model\Forms.Model.csproj" />
+    <ProjectReference Include="..\Forms.Repository\Forms.Repository.csproj" />
   </ItemGroup>
 
 </Project>
