@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Forms.Repository.Auth;
-using Forms.Repository.Model;
+﻿using Forms.Repository.Auth;
+using Microsoft.AspNetCore.Mvc;
+using Model.Auth;
 
 namespace Forms.WebApi.Controllers
 {

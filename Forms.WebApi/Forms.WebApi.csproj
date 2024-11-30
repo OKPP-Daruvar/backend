@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Forms.Repository\Forms.Repository.csproj" />
+    <ProjectReference Include="..\Model\Model.csproj" />
   </ItemGroup>
 
 </Project>
