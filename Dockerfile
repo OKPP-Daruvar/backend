@@ -8,9 +8,8 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 
-# Copy the project files for WebApi and Forms.Model (make sure Forms.Model is included)
 COPY ["Forms.WebApi/Forms.WebApi.csproj", "Forms.WebApi/"]
-COPY ["Forms.Model/Forms.Model.csproj", "Forms.Repository/"]
+COPY ["Forms.Repository/Forms.Repository.csproj", "Forms.Repository/"]
 
 # Restore dependencies
 RUN dotnet restore "Forms.WebApi/Forms.WebApi.csproj"
