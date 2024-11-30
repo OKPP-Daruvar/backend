@@ -397,3 +397,4 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 firebase-config.json
+Forms.WebApi/Dockerfile

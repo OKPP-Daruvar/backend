@@ -12,13 +12,20 @@ namespace Forms.Repository.Config
             try
             {
                 string serviceAccountJson = Environment.GetEnvironmentVariable("FIREBASE_SERVICE_ACCOUNT_JSON");
+                string serviceAccountJsonPath = Environment.GetEnvironmentVariable("FIREBASE_SERVICE_ACCOUNT_PATH");
 
                 if (!string.IsNullOrEmpty(serviceAccountJson))
                 {
-                    // If we have the JSON content as an environment variable, use it directly
                     FirebaseApp.Create(new AppOptions
                     {
                         Credential = GoogleCredential.FromJson(serviceAccountJson)
+                    });
+                }
+                else if(serviceAccountJsonPath != null)
+                {
+                    FirebaseApp.Create(new AppOptions
+                    {
+                        Credential = GoogleCredential.FromFile(serviceAccountJsonPath)
                     });
                 }
                 else
