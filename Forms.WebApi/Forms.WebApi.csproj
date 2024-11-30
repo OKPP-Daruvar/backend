@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Forms.Model\Forms.Model.csproj" />
     <ProjectReference Include="..\Forms.Repository\Forms.Repository.csproj" />
   </ItemGroup>
 

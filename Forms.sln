@@ -5,16 +5,10 @@ VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Forms.WebApi", "Forms.WebApi\Forms.WebApi.csproj", "{07B43315-9F39-44AE-885C-A0B6551D2F7D}"
 	ProjectSection(ProjectDependencies) = postProject
-		{02F67EB4-E2CB-4752-AFA2-10A8E538B495} = {02F67EB4-E2CB-4752-AFA2-10A8E538B495}
 		{E1242C1D-1645-45B8-816A-E8E71671C6B0} = {E1242C1D-1645-45B8-816A-E8E71671C6B0}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Forms.Repository", "Forms.Repository\Forms.Repository.csproj", "{E1242C1D-1645-45B8-816A-E8E71671C6B0}"
-	ProjectSection(ProjectDependencies) = postProject
-		{02F67EB4-E2CB-4752-AFA2-10A8E538B495} = {02F67EB4-E2CB-4752-AFA2-10A8E538B495}
-	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Forms.Model", "Forms.Model\Forms.Model.csproj", "{02F67EB4-E2CB-4752-AFA2-10A8E538B495}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,10 +24,6 @@ Global
 		{E1242C1D-1645-45B8-816A-E8E71671C6B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1242C1D-1645-45B8-816A-E8E71671C6B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1242C1D-1645-45B8-816A-E8E71671C6B0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{02F67EB4-E2CB-4752-AFA2-10A8E538B495}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{02F67EB4-E2CB-4752-AFA2-10A8E538B495}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{02F67EB4-E2CB-4752-AFA2-10A8E538B495}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{02F67EB4-E2CB-4752-AFA2-10A8E538B495}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
