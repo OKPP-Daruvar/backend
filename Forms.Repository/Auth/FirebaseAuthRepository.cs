@@ -1,5 +1,6 @@
 ﻿using FirebaseAdmin.Auth;
 using Forms.Repository.Config;
+using FirebaseAuth = FirebaseAdmin.Auth.FirebaseAuth;
 
 namespace Forms.Repository.Auth
 {
@@ -38,10 +39,8 @@ namespace Forms.Repository.Auth
             {
                 firebaseConfig.Initialize();
 
-                // Verify the Firebase ID token sent from frontend
                 FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(idToken);
 
-                // If the token is valid, return the decoded token (it contains user info)
                 return decodedToken;
             }
             catch (Exception ex)

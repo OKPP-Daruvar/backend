@@ -1,5 +1,6 @@
 using Forms.Repository.Auth;
 using Forms.Repository.Config;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,6 +43,25 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddSingleton<IFirebaseConfig, FirebaseConfig>();
 builder.Services.AddScoped<IFirebaseAuthRepository, FirebaseAuthRepository>();
 
+// Configure JWT Bearer authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme; // Default scheme
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme; // Default challenge scheme
+})
+.AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false; 
+    options.SaveToken = true;
+
+    // Firebase token validation parameters
+    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+    {
+        ValidateIssuer = false,  
+        ValidateAudience = false, 
+        ValidateLifetime = true
+    };
+});
 
 // CORS config
 builder.Services.AddCors(options =>
@@ -54,26 +74,17 @@ builder.Services.AddCors(options =>
     });
 });
 
-
 var app = builder.Build();
 
 app.UseCors();
-
 app.UseSwagger();
 app.UseSwaggerUI();
-
 app.UseDeveloperExceptionPage();
 
-// Deploy config
-if (!app.Environment.IsDevelopment())
-{
-    var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
-    app.Urls.Add($"http://0.0.0.0:{port}");
-}
-
+// HTTPS Redirection and Authentication
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
+app.UseAuthentication();
+app.UseAuthorization();  
 
 app.MapControllers();
 

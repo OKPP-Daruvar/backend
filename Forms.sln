@@ -14,7 +14,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Forms.Repository", "Forms.R
 		{CF3A1C12-B6F0-48C0-A9AC-4F89DF2C716C} = {CF3A1C12-B6F0-48C0-A9AC-4F89DF2C716C}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{CF3A1C12-B6F0-48C0-A9AC-4F89DF2C716C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Forms.Model", "Model\Forms.Model.csproj", "{CF3A1C12-B6F0-48C0-A9AC-4F89DF2C716C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

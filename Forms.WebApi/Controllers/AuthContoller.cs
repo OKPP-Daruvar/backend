@@ -1,4 +1,5 @@
 ﻿using Forms.Repository.Auth;
+using Forms.WebApi.Config;
 using Microsoft.AspNetCore.Mvc;
 using Model.Auth;
 
@@ -15,22 +16,17 @@ namespace Forms.WebApi.Controllers
             this.firebaseAuthRepository = firebaseAuthRepository;
         }
 
-        [Route("VerifyTokenAsync")]
-        [HttpGet]
-        public async Task<IActionResult> VerifyTokenAsync(string token)
-        {
-            return Ok(await firebaseAuthRepository.VerifyTokenAsync(token));
-        }
-
-
+        //[FirebaseAuth]
         [Route("RegisterUserAsync")]
         [HttpPost]
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserModel registerUserModel)
         {
             try
             {
+                //string? token = HttpContext.Items["Token"] as String;
+                //var firebaseUser = await firebaseAuthRepository.VerifyTokenAsync(token);
                 await firebaseAuthRepository.RegisterAsync(registerUserModel.Email, registerUserModel.Password);
-
+                
                 return Ok("User registered successfully!");
 
             }catch (Exception ex)
