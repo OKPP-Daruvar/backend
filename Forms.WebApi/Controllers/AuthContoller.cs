@@ -1,5 +1,4 @@
 ﻿using Forms.Repository.Auth;
-using Forms.WebApi.Config;
 using Microsoft.AspNetCore.Mvc;
 using Model.Auth;
 
@@ -16,10 +15,13 @@ namespace Forms.WebApi.Controllers
             this.firebaseAuthRepository = firebaseAuthRepository;
         }
 
-        //[FirebaseAuth]
+        /// <summary>
+        /// Registers a new user.
+        /// </summary>
+        /// <param name="registerUserModel"></param>
         [Route("RegisterUserAsync")]
         [HttpPost]
-        public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserModel registerUserModel)
+        public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserModelPost registerUserModel)
         {
             try
             {

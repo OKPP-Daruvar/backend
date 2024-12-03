@@ -2,7 +2,7 @@
 
 namespace Model.Auth
 {
-    public class RegisterUserModel
+    public class RegisterUserModelPost
     {
         [Required]
         public string Email { get; set; }

@@ -1,4 +1,6 @@
-﻿namespace Forms.Model
+﻿using Google.Cloud.Firestore;
+
+namespace Forms.Model
 {
     public enum QuestionType
     {
@@ -6,5 +8,4 @@
         SingleChoice,   
         MultipleChoice 
     }
-
 }
