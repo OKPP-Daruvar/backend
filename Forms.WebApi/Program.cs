@@ -1,10 +1,8 @@
 using Forms.Repository.Auth;
 using Forms.Repository.Config;
-using Forms.Repository.Survey;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
-using System.Reflection;
-using System.Text.Json.Serialization;
+using Forms.Repository.EmailService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,10 +24,6 @@ builder.Services.AddSwaggerGen(c =>
         Description = "Enter 'Bearer' followed by your token. Example: 'Bearer your_token_here'",
     });
 
-    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    c.IncludeXmlComments(xmlPath); // Include XML comments
-
     // Apply the security scheme globally
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
@@ -49,13 +43,7 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddSingleton<IFirebaseConfig, FirebaseConfig>();
 builder.Services.AddScoped<IFirebaseAuthRepository, FirebaseAuthRepository>();
-builder.Services.AddTransient<ISurveyRepository, SurveyRepository>();
-
-builder.Services.AddControllers().AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-});
-
+builder.Services.AddScoped<IEmailServiceRepository,EmailServiceRepository>();
 // Configure JWT Bearer authentication
 builder.Services.AddAuthentication(options =>
 {
