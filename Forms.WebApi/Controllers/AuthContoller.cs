@@ -1,6 +1,6 @@
 ﻿using Forms.Repository.Auth;
 using Microsoft.AspNetCore.Mvc;
-using Model.Auth;
+using Forms.Model.Auth;
 
 namespace Forms.WebApi.Controllers
 {
@@ -21,7 +21,7 @@ namespace Forms.WebApi.Controllers
         /// <param name="registerUserModel"></param>
         [Route("RegisterUserAsync")]
         [HttpPost]
-        public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserModelPost registerUserModel)
+        public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserModel registerUserModel)
         {
             try
             {

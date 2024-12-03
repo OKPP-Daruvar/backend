@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Model.Auth
+namespace Forms.Model.Auth
 {
-    public class RegisterUserModelPost
+    public class RegisterUserModel
     {
         [Required]
         public string Email { get; set; }
