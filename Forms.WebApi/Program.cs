@@ -1,3 +1,4 @@
+using Forms.Repository.Analytics;
 using Forms.Repository.Auth;
 using Forms.Repository.Config;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -57,6 +58,7 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 });
 builder.Services.AddScoped<IEmailServiceRepository,EmailServiceRepository>();
 builder.Services.AddScoped<IQRCodeServiceRepository, QRCodeServiceRepository>();
+builder.Services.AddScoped<IAnalyticsRepository, AnalyticsRepository>();
 
 // Configure JWT Bearer authentication
 builder.Services.AddAuthentication(options =>
