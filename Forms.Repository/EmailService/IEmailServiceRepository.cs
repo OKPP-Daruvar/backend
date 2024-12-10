@@ -8,6 +8,6 @@ namespace Forms.Repository.EmailService
 {
     public interface IEmailServiceRepository
     {
-        Task<bool> SendEmailAsync(string recipientEmail, string subject, string body);
+        Task<bool> SendEmailAsync(string recipientEmail, string subject, string body, byte[] attachmentBytes, string attachmentFileName);
     }
 }

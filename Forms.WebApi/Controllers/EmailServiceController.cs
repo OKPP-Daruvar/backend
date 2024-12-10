@@ -16,10 +16,11 @@ using Forms.WebApi.Config;
 public class EmailServiceController : ControllerBase
     {
         IEmailServiceRepository _emailServiceRepository;
-
-        public EmailServiceController(IEmailServiceRepository emailServiceRepository)
+        IQRCodeServiceRepository _qrCodeServiceRepository;
+        public EmailServiceController(IEmailServiceRepository emailServiceRepository, IQRCodeServiceRepository qRCodeServiceRepository)
         {
             _emailServiceRepository = emailServiceRepository;
+            _qrCodeServiceRepository = qRCodeServiceRepository;
         }
 
     /// <summary>
@@ -32,11 +33,20 @@ public class EmailServiceController : ControllerBase
         public async Task<HttpResponseMessage> SendEmail([FromBody] EmailRequest emailRequest)
         {
         var response = new HttpResponseMessage();
+        
         try
         {
+            var qrCodeBytes = _qrCodeServiceRepository.GenerateQRCode(emailRequest.SurveyLink);
+
             foreach (var email in emailRequest.Emails)
             {
-                await _emailServiceRepository.SendEmailAsync(email, "Your link to access a survey", $"Click here to access the survey: {emailRequest.SurveyLink}");
+                await _emailServiceRepository.SendEmailAsync(
+                                email,
+                                "Your link to access a survey",
+                                $"Click here to access the survey: {emailRequest.SurveyLink} or scan the attached QR code.",
+                                qrCodeBytes,
+                                "survey_qr_code.png"
+                            );
             }
 
             response.StatusCode = HttpStatusCode.OK;

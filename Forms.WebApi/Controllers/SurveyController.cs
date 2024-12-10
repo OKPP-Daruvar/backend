@@ -47,6 +47,7 @@ namespace Forms.WebApi.Controllers
         /// </summary>
         /// <param name="surveyPost">The survey details to be created.</param>
         /// <returns>If successful, returns the survey ID.</returns>
+        [Route("CreateSurvey")]
         [FirebaseAuth]
         [HttpPost]
         public async Task<IActionResult> PostAsync([FromBody] SurveyPost surveyPost)
@@ -76,6 +77,7 @@ namespace Forms.WebApi.Controllers
         /// </summary>
         /// <param name="surveyId"></param>
         /// <returns></returns>
+        [Route("GetSurvey")]
         [HttpGet]
         public async Task<IActionResult> GetSurveyAsync(string surveyId)
         {
@@ -88,8 +90,65 @@ namespace Forms.WebApi.Controllers
             {
                 return StatusCode(500, new { error = ex.Message });
             }
-            
+
             return Ok(res);
+        }
+
+        /// <summary>
+        /// Gets surveys.
+        /// </summary>
+        /// <returns></returns>
+        [FirebaseAuth]
+        [Route("GetSurveys")]
+        [HttpGet]
+        public async Task<IActionResult> GetSurveysAsync()
+        {
+            try
+            {
+                string? token = HttpContext.Items["Token"] as String;
+                if (token == null)
+                {
+                    return StatusCode(401, token);
+                }
+                var firebaseUser = await firebaseAuthRepository.VerifyTokenAsync(token);
+
+                List<Survey> surveys = await surveyRepository.GetSurveys(firebaseUser);
+
+                return Ok(surveys);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Deletes survey.
+        /// </summary>
+        /// <param name="surveyId"></param>
+        [FirebaseAuth]
+        [Route("DeleteSurvey")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAsync(string surveyId)
+        {
+            try
+            {
+                string? token = HttpContext.Items["Token"] as String;
+                if (token == null)
+                {
+                    return StatusCode(401, token);
+                }
+                var firebaseUser = await firebaseAuthRepository.VerifyTokenAsync(token);
+
+                await surveyRepository.DeleteSurvey(surveyId, firebaseUser);
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, new { e.Message });
+            }
+            return Ok(surveyId);
+
         }
     }
 }

@@ -56,6 +56,8 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 builder.Services.AddScoped<IEmailServiceRepository,EmailServiceRepository>();
+builder.Services.AddScoped<IQRCodeServiceRepository, QRCodeServiceRepository>();
+
 // Configure JWT Bearer authentication
 builder.Services.AddAuthentication(options =>
 {
