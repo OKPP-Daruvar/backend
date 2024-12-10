@@ -3,6 +3,7 @@ using Forms.Repository.Auth;
 using Forms.Repository.Survey;
 using Forms.WebApi.Config;
 using Microsoft.AspNetCore.Mvc;
+using ZXing.Aztec.Internal;
 
 namespace Forms.WebApi.Controllers
 {
@@ -47,5 +48,50 @@ namespace Forms.WebApi.Controllers
 
             return Ok(surveyId);
         }
+
+        [HttpPost]
+
+        public async Task<IActionResult> DeleteAsync([FromBody] string surveyId)
+        {
+            try
+            {
+                string? token = HttpContext.Items["Token"] as String;
+                if (token == null)
+                {
+                    return StatusCode(401, token);
+                }
+                var firebaseUser = await firebaseAuthRepository.VerifyTokenAsync(token);
+
+                await surveyRepository.DeleteSurvey(surveyId, firebaseUser);
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, new { e.Message });
+            }
+            return Ok(surveyId);
+
+        }
+
+        public async Task<IActionResult> GetSurveysAsync()
+        {
+            try
+            {
+                string? token = HttpContext.Items["Token"] as String;
+                if(token == null){
+                    return BadRequest("User not found");
+                }
+
+                var firebaseUser = await firebaseAuthRepository.VerifyTokenAsync(token);
+
+                List<Model.Survey> surveys = await surveyRepository.GetSurveys(firebaseUser);
+
+                return Ok(surveys);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        } 
     }
 }
