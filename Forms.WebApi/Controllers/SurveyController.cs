@@ -20,6 +20,29 @@ namespace Forms.WebApi.Controllers
         }
 
         /// <summary>
+        /// Sends answer from a user.
+        /// </summary>
+        /// <param name="surveyId"></param>
+        /// <param name="answerPost"></param>
+        /// <returns></returns>
+        [Route("SendAnswer")]
+        [HttpPost]
+        public async Task<IActionResult> SendAnswerAsync(string surveyId, [FromBody] AnswerPost answerPost)
+        {
+            bool status;
+            try
+            {
+                status = await surveyRepository.SendAnswerAsync(surveyId, answerPost);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+            if (status) { return Ok(); }
+            else { return BadRequest(); }
+        }
+
+        /// <summary>
         /// Creates a new Survey.
         /// </summary>
         /// <param name="surveyPost">The survey details to be created.</param>
@@ -46,6 +69,27 @@ namespace Forms.WebApi.Controllers
             }
 
             return Ok(surveyId);
+        }
+
+        /// <summary>
+        /// Gets a survey by id.
+        /// </summary>
+        /// <param name="surveyId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> GetSurveyAsync(string surveyId)
+        {
+            Survey res;
+            try
+            {
+                res = await surveyRepository.GetSurvey(surveyId);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+            
+            return Ok(res);
         }
     }
 }

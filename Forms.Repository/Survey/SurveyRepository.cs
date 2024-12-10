@@ -7,7 +7,7 @@ namespace Forms.Repository.Survey
 {
     public class SurveyRepository : ISurveyRepository
     {
-        private IFirebaseConfig firebaseConfig;
+        private readonly IFirebaseConfig firebaseConfig;
 
         public SurveyRepository(IFirebaseConfig firebaseConfig)
         {
@@ -43,5 +43,52 @@ namespace Forms.Repository.Survey
 
             return documentRef.Id;
         }
+
+        public async Task<Model.Survey> GetSurvey(string surveyId)
+        {
+            firebaseConfig.Initialize();
+            var db = firebaseConfig.GetFirestoreDb();
+
+            var surveyDocument = db.Collection("surveys").Document(surveyId);
+
+            var snapshot = await surveyDocument.GetSnapshotAsync();
+
+            if (!snapshot.Exists)
+            {
+                throw new Exception($"Survey with ID {surveyId} does not exist.");
+            }
+
+            var survey = snapshot.ConvertTo<Model.Survey>();
+            return survey;
+        }
+
+
+        public async Task<bool> SendAnswerAsync(string surveyId, AnswerPost answerPost)
+        {
+            firebaseConfig.Initialize();
+            var db = firebaseConfig.GetFirestoreDb();
+
+            Answer answer = new()
+            {
+                SubmittedAt = DateTime.UtcNow,
+                Answers = answerPost.Answers,
+                Respondent = answerPost.Respondent
+            };
+
+            try
+            {
+                var answersCollection = db.Collection("surveys").Document(surveyId).Collection("answers");
+
+                await answersCollection.AddAsync(answer);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to add answer: {ex.Message}");
+                return false;
+            }
+        }
+
     }
 }
