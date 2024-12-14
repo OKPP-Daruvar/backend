@@ -3,6 +3,7 @@ using Forms.Repository.Auth;
 using Forms.WebApi.Config;
 using Microsoft.AspNetCore.Mvc;
 using Forms.Repository.Analytics;
+using Forms.Model;
 
 namespace Forms.WebApi.Controller
 {
@@ -18,10 +19,10 @@ namespace Forms.WebApi.Controller
 
 
         [HttpGet]
-        public string GetAnswersAsync()
+        public Task<List<GraphData>> GetAnswersAsync(string surveyId)
         {
-            repository.GetAnswersAsync();
-            return "";
+            Task<List<GraphData>> graphDataList = repository.GetGraphDataAsync(surveyId);
+            return graphDataList;
         }
     }
 }

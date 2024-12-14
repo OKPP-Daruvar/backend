@@ -5,13 +5,13 @@ namespace Forms.Model
     [FirestoreData]
     public class Answer
     {
-        [FirestoreProperty]
-        public Demographics Respondent { get; set; }
+        [FirestoreProperty("respondent")]
+        public Demographics? Respondent { get; set; }
 
-        [FirestoreProperty]
+        [FirestoreProperty("answers")]
         public Dictionary<string, List<string>> Answers { get; set; } // (Key = QuestionId, Value = list<string>)
 
-        [FirestoreProperty]
+        [FirestoreProperty("submitted_at")]
         public DateTime SubmittedAt { get; set; } 
     }
 

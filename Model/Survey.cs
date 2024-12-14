@@ -6,19 +6,19 @@ namespace Forms.Model
     public class Survey
     {
 
-        [FirestoreProperty]
+        [FirestoreProperty("userId")]
         public string UserId { get; set; }
 
-        [FirestoreProperty]
+        [FirestoreProperty("title")]
         public string Title { get; set; }
 
-        [FirestoreProperty]
+        [FirestoreProperty("description")]
         public string Description { get; set; }
 
-        [FirestoreProperty]
+        [FirestoreProperty("questions")]
         public List<Question> Questions { get; set; }
 
-        [FirestoreProperty]
+        [FirestoreProperty("createdAt")]
         public DateTime CreatedAt { get; set; }
     }
 

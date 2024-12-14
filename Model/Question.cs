@@ -6,16 +6,16 @@ namespace Forms.Model
     [FirestoreData]
     public class Question
     {
-        [FirestoreProperty]
+        [FirestoreProperty("questionId")]
         public string QuestionId { get; set; }
 
-        [FirestoreProperty]
+        [FirestoreProperty("text")]
         public string Text { get; set; }
 
         [FirestoreProperty(ConverterType = typeof(EnumConverter<QuestionType>))]
         public QuestionType Type { get; set; }
 
-        [FirestoreProperty]
+        [FirestoreProperty("options")]
         public List<string> Options { get; set; }
     }
 

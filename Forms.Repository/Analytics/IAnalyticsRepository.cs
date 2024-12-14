@@ -1,4 +1,4 @@
-﻿using Forms.Model;
+﻿using Forms.Model.GraphData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ namespace Forms.Repository.Analytics
 {
     public interface IAnalyticsRepository
     {
-        Task<List<Answer>> GetAnswersAsync();
+        Task<List<ChoiceGraphData>> GetGraphDataAsync(string surveyId);
         //Task<List<Answer>> GetAnswersAsync();
     }
 }

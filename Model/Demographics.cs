@@ -5,13 +5,13 @@ namespace Forms.Model
     [FirestoreData]
     public class Demographics
     {
-        [FirestoreProperty]
+        [FirestoreProperty("age")]
         public int Age { get; set; }
 
-        [FirestoreProperty]
+        [FirestoreProperty("gender")]
         public string Gender { get; set; }
 
-        [FirestoreProperty]
+        [FirestoreProperty("education_level")]
         public string EducationLevel { get; set; }
     }
 
