@@ -25,6 +25,7 @@ namespace Forms.WebApi.Controller
         /// <summary>
         /// Get questions and answers data.
         /// </summary>
+        [FirebaseAuth]
         [HttpGet]
         public async Task<IActionResult> GetAnswersAsync(string surveyId, int? minAge = null, int? maxAge = null, string? sex = null, string? educationLevel = null)
         {

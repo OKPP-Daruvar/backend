@@ -30,8 +30,6 @@ namespace Forms.Repository.Analytics
             firebaseConfig.Initialize();
             var db = firebaseConfig.GetFirestoreDb();
 
-            //var userId = firebaseToken.Uid;
-
             DocumentReference surveyDocReference = db.Collection("surveys").Document(filter.SurveyId);
 
             DocumentSnapshot surveySnapshot = await surveyDocReference.GetSnapshotAsync();
@@ -40,7 +38,6 @@ namespace Forms.Repository.Analytics
             Query answersQuery = BuildFilterQuery(surveyDocReference, filter);
             QuerySnapshot answersSnapshot = await answersQuery.GetSnapshotAsync();
 
-            //QuerySnapshot answersSnapshot = await surveyDocReference.Collection("answers").GetSnapshotAsync();
             var answers = new List<Answer>();
             foreach (DocumentSnapshot answerDoc in answersSnapshot.Documents)
             {
@@ -130,12 +127,6 @@ namespace Forms.Repository.Analytics
             }
 
             return query;
-        }
-
-        private List<Answer> GetAnswers(string questionId)
-        {
-            // TODO - async method?
-            return new List<Answer>();
         }
     }
 }
