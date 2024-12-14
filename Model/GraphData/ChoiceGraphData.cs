@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace Forms.Model.GraphData
 {
-    public class ChoiceGraphData
+    public class ChoiceGraphData : GraphData
     {
-        public int Id { get; set; }
-        public Question? Question { get; set; }
         public Dictionary<string, int>? Answers { get; set; }
-
     }
 }

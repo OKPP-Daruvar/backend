@@ -3,7 +3,11 @@ using Forms.Repository.Auth;
 using Forms.WebApi.Config;
 using Microsoft.AspNetCore.Mvc;
 using Forms.Repository.Analytics;
+using Forms.Model.GraphData;
 using Forms.Model;
+using Forms.Repository.Survey;
+using SendGrid.Helpers.Mail;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Forms.WebApi.Controller
 {
@@ -18,11 +22,26 @@ namespace Forms.WebApi.Controller
         }
 
 
+        /// <summary>
+        /// Get questions and answers data.
+        /// </summary>
         [HttpGet]
-        public Task<List<GraphData>> GetAnswersAsync(string surveyId)
+        public async Task<IActionResult> GetAnswersAsync(string surveyId, int? minAge = null, int? maxAge = null, string? sex = null, string? educationLevel = null)
         {
-            Task<List<GraphData>> graphDataList = repository.GetGraphDataAsync(surveyId);
-            return graphDataList;
+            List<GraphData> graphDataList = new List<GraphData>();
+
+            AnalyticsFilter filter = new AnalyticsFilter(surveyId, minAge, maxAge, sex, educationLevel);
+
+            try
+            {
+                graphDataList = await repository.GetGraphDataAsync(filter);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+            }
+            return Ok(graphDataList);
+
         }
     }
 }

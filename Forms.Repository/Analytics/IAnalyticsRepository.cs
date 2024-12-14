@@ -9,7 +9,6 @@ namespace Forms.Repository.Analytics
 {
     public interface IAnalyticsRepository
     {
-        Task<List<ChoiceGraphData>> GetGraphDataAsync(string surveyId);
-        //Task<List<Answer>> GetAnswersAsync();
+        Task<List<GraphData>> GetGraphDataAsync(AnalyticsFilter filter);
     }
 }

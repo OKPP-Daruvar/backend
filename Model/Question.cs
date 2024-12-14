@@ -12,7 +12,7 @@ namespace Forms.Model
         [FirestoreProperty("text")]
         public string Text { get; set; }
 
-        [FirestoreProperty(ConverterType = typeof(EnumConverter<QuestionType>))]
+        [FirestoreProperty("type", ConverterType = typeof(EnumConverter<QuestionType>))]
         public QuestionType Type { get; set; }
 
         [FirestoreProperty("options")]

@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Forms.Model.GraphData
 {
-    class OpenTextGraphData : GraphData
+    public class OpenTextGraphData : GraphData
     {
-        //public int Id { get; set; }
-        //public Question? Question { get; set; }
         public List<string>? Answers { get; set; }
     }
 }

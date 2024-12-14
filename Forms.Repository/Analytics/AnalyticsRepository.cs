@@ -10,6 +10,7 @@ using Forms.Model.GraphData;
 using Forms.Repository.Config;
 using Google.Cloud.Firestore;
 using static Google.Api.FieldInfo.Types;
+using static Google.Cloud.Firestore.V1.StructuredQuery.Types;
 
 namespace Forms.Repository.Analytics
 {
@@ -22,30 +23,25 @@ namespace Forms.Repository.Analytics
             this.firebaseConfig = firebaseConfig;
         }
 
-        public async Task<List<GraphData>> GetGraphDataAsync(string surveyId)
+        public async Task<List<GraphData>> GetGraphDataAsync(AnalyticsFilter filter)
         {
             var graphDataList = new List<GraphData>();
 
             firebaseConfig.Initialize();
+            var db = firebaseConfig.GetFirestoreDb();
 
             //var userId = firebaseToken.Uid;
 
-            var db = firebaseConfig.GetFirestoreDb();
-
-            //answersSnapshot = await db.Collection("surveys").Document(surveyId).Collection("answers").GetSnapshotAsync();
-
-            DocumentReference surveyDocReference = db.Collection("surveys").Document(surveyId);
+            DocumentReference surveyDocReference = db.Collection("surveys").Document(filter.SurveyId);
 
             DocumentSnapshot surveySnapshot = await surveyDocReference.GetSnapshotAsync();
-
             Model.Survey survey = surveySnapshot.ConvertTo<Model.Survey>();
 
+            Query answersQuery = BuildFilterQuery(surveyDocReference, filter);
+            QuerySnapshot answersSnapshot = await answersQuery.GetSnapshotAsync();
 
-
-            QuerySnapshot answersSnapshot = await surveyDocReference.Collection("answers").GetSnapshotAsync();
-
+            //QuerySnapshot answersSnapshot = await surveyDocReference.Collection("answers").GetSnapshotAsync();
             var answers = new List<Answer>();
-
             foreach (DocumentSnapshot answerDoc in answersSnapshot.Documents)
             {
                 if (answerDoc.Exists)
@@ -59,51 +55,81 @@ namespace Forms.Repository.Analytics
 
             foreach (var question in questions)
             {
-                Dictionary<string, int> choiceAnswers = new Dictionary<string, int>();
-                List<string> openTextAnswers = new List<string>();
                 if (question.Type != QuestionType.OpenText)
                 {
+                    ChoiceGraphData choiceGraphData = new ChoiceGraphData();
+                    choiceGraphData.Id = question.QuestionId;
+                    choiceGraphData.Question = question;
+                    Dictionary<string, int> choiceAnswers = new Dictionary<string, int>();
+
                     foreach (var answerOption in question.Options)
                     {
                         choiceAnswers[answerOption] = 0;
                     }
 
+                    foreach (var answer in answers)
+                    {
+                        if (answer.Answers.TryGetValue(question.QuestionId, out var questionAnswerChoices))
+                        {
+                            foreach (var questionAnswerChoice in questionAnswerChoices)
+                            {
+                                choiceAnswers[questionAnswerChoice] += 1;
+                            }
+                        }
+                    }
 
-                } else
-                {
+                    choiceGraphData.Answers = choiceAnswers;
+
+                    graphDataList.Add(choiceGraphData);
+
+                } else {
+                    OpenTextGraphData openTextGraphData = new OpenTextGraphData();
+                    openTextGraphData.Id = question.QuestionId;
+                    openTextGraphData.Question = question;
+                    List<string>? openTextAnswers = new List<string>();
+
                     foreach (var answer in answers)
                     {
                         if (answer.Answers.TryGetValue(question.QuestionId, out var questionAnswer))
                         {
-                            openTextAnswers.Add(questionAnswer);
+                            // OpenTextAnswers are stored in a list with one element, therefore to access answers [0] is used
+                            openTextAnswers.Add(questionAnswer[0]);
                         }
-                        choiceAnswers.Add(answer.Answers[question.QuestionId] as Answer);
                     }
+                    openTextGraphData.Answers = openTextAnswers;
+
+                    graphDataList.Add(openTextGraphData);
                 }
-                
-                // TODO - if no options then put answers in a list, othewise put them in dictionary answer: answerCount
-
-                if (question != null)
-                {
-                    ChoiceGraphData graphData = new ChoiceGraphData();
-                    graphData.Question = question;
-
-                    foreach (var answer in answers)
-                    {
-                        //if(answer.Answers.TryGetValue(question.QuestionId, out var questionAnswer))
-                        //{
-                        //    questionAnswers[questionAnswer] = questionAnswers[questionAnswer] + 1;
-                        //}
-                        //questionAnswers.Add(answer.Answers[question.QuestionId] as Answer);
-                    }
-
-                    graphData.Answers = questionAnswers;
-                    graphDataList.Add(graphData);
-                }
-
             }
 
             return graphDataList;
+        }
+
+        private Query BuildFilterQuery(DocumentReference surveyDocReference, AnalyticsFilter filter)
+        {
+            Query query = surveyDocReference.Collection("answers");
+
+            if (!string.IsNullOrEmpty(filter.Sex))
+            {
+                query = query.WhereEqualTo("respondent.gender", filter.Sex);
+            }
+
+            if (filter.MinAge != null)
+            {
+                query = query.WhereGreaterThanOrEqualTo("respondent.age", filter.MinAge);
+            }
+
+            if (filter.MaxAge != null)
+            {
+                query = query.WhereLessThanOrEqualTo("respondent.age", filter.MaxAge);
+            }
+
+            if (!string.IsNullOrEmpty(filter.EducationLevel))
+            {
+                query = query.WhereEqualTo("respondent.education_level", filter.EducationLevel);
+            }
+
+            return query;
         }
 
         private List<Answer> GetAnswers(string questionId)
