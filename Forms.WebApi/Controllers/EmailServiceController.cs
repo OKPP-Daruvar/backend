@@ -8,6 +8,7 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Forms.WebApi.Config;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -22,6 +23,11 @@ public class EmailServiceController : ControllerBase
             _qrCodeServiceRepository = qRCodeServiceRepository;
         }
 
+    /// <summary>
+    /// Sends email with link and qr code to access survey.
+    /// </summary>
+    /// <param name="emailRequest"></param>
+    [FirebaseAuth]
     [Route("SendEmail")]
     [HttpPost]
         public async Task<HttpResponseMessage> SendEmail([FromBody] EmailRequest emailRequest)
