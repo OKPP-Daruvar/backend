@@ -89,7 +89,7 @@ namespace Forms.Repository.Survey
             var userId = firebaseToken.Uid;
 
             var surveyQuery = db.Collection("surveys")
-                .WhereEqualTo("UserId", userId);
+                .WhereEqualTo("userId", userId);
 
             var querySnapshot = await surveyQuery.GetSnapshotAsync();
 
