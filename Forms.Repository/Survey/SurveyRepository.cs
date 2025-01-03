@@ -40,6 +40,8 @@ namespace Forms.Repository.Survey
 
             var documentRef = db.Collection("surveys").Document();
 
+
+            survey.Id = documentRef.Id;
             await documentRef.SetAsync(survey);
 
             return documentRef.Id;

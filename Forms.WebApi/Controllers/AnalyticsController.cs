@@ -1,13 +1,7 @@
-﻿using System;
-using Forms.Repository.Auth;
+﻿using Forms.Model.GraphData;
+using Forms.Repository.Analytics;
 using Forms.WebApi.Config;
 using Microsoft.AspNetCore.Mvc;
-using Forms.Repository.Analytics;
-using Forms.Model.GraphData;
-using Forms.Model;
-using Forms.Repository.Survey;
-using SendGrid.Helpers.Mail;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Forms.WebApi.Controller
 {

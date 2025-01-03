@@ -9,6 +9,9 @@ namespace Forms.Model
         [FirestoreProperty("userId")]
         public string UserId { get; set; }
 
+        [FirestoreProperty("id")]
+        public string Id { get; set; }
+
         [FirestoreProperty("title")]
         public string Title { get; set; }
 
